@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary Mom & Dad!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #fffaf0; }
+        .cursive { font-family: 'Dancing Script', cursive; }
+        .photo-card { transition: transform 0.3s ease; }
+        .photo-card:hover { transform: scale(1.03); }
+        .hero-bg {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/1.jpg'); /* Using your 1st photo as background */
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Hero Section -->
+    <header class="hero-bg h-screen flex items-center justify-center text-center text-white px-4">
+        <div>
+            <h1 class="text-5xl md:text-7xl cursive mb-4">Happy Anniversary</h1>
+            <h2 class="text-2xl md:text-3xl font-light tracking-widest uppercase">To Our Dearest Parents</h2>
+            <div class="mt-8 animate-bounce">
+                <p class="text-sm">Scroll to see the journey</p>
+                <span>↓</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Message Section -->
+    <section class="max-w-4xl mx-auto py-20 px-6 text-center">
+        <h3 class="text-3xl cursive text-red-600 mb-6">A Journey of Love & Togetherness</h3>
+        <p class="text-lg leading-relaxed text-gray-600 italic">
+            "Through every festival, every prayer, and every smile, you have shown us what true partnership looks like. 
+            From the early days to building our beautiful home, your love is the foundation of our lives."
+        </p>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="container mx-auto px-4 pb-20">
+        <div class="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+            
+            <!-- We will loop through 21 images. 
+                 Note: Ensure images are named 1.jpg to 21.jpg in an /images folder -->
+            
+            <!-- Example of how to structure the images -->
+            <script>
+                const gallery = document.querySelector('.columns-1');
+                for (let i = 1; i <= 21; i++) {
+                    const div = document.createElement('div');
+                    div.className = "photo-card break-inside-avoid bg-white p-2 rounded-lg shadow-lg border border-orange-100";
+                    div.innerHTML = `<img src="images/${i}.jpg" class="rounded w-full h-auto" alt="Memory ${i}" loading="lazy">`;
+                    document.write(div.outerHTML);
+                }
+            </script>
+
+        </div>
+    </section>
+
+    <!-- Footer / Wish Section -->
+    <footer class="bg-red-50 py-16 text-center border-t border-red-100">
+        <h2 class="text-4xl cursive text-red-700 mb-4">We Love You!</h2>
+        <p class="text-gray-500 mb-8">May the coming years be filled with even more joy and health.</p>
+        <div class="flex justify-center space-x-4">
+            <span class="text-2xl">❤️</span>
+            <span class="text-2xl">✨</span>
+            <span class="text-2xl">🏡</span>
+        </div>
+        <p class="mt-12 text-xs text-gray-400 uppercase tracking-widest">Handcrafted with love by your children</p>
+    </footer>
+
+</body>
+</html>
