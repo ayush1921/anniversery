@@ -3,76 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Anniversary Mom & Dad!</title>
+    <title>Happy Anniversary Ma & Papa!</title>
+    
+    <!-- Scripts & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #fffaf0; }
+        body { font-family: 'Poppins', sans-serif; background-color: #fff5f5; overflow-x: hidden; }
         .cursive { font-family: 'Dancing Script', cursive; }
-        .photo-card { transition: transform 0.3s ease; }
-        .photo-card:hover { transform: scale(1.03); }
-        .hero-bg {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/1.jpg'); /* Using your 1st photo as background */
-            background-size: cover;
-            background-position: center;
+        
+        /* Floating Hearts Animation */
+        .heart {
+            position: fixed;
+            font-size: 1.5rem;
+            color: rgba(255, 105, 180, 0.4);
+            user-select: none;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 6s linear infinite;
         }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Image Pop-up Effect */
+        .photo-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .photo-card:hover { transform: translateY(-10px) rotate(2deg); z-index: 10; }
     </style>
 </head>
-<body class="text-gray-800">
+<body>
+
+    <!-- Floating Hearts Container -->
+    <div id="hearts-container"></div>
 
     <!-- Hero Section -->
-    <header class="hero-bg h-screen flex items-center justify-center text-center text-white px-4">
-        <div>
-            <h1 class="text-5xl md:text-7xl cursive mb-4">Happy Anniversary</h1>
-            <h2 class="text-2xl md:text-3xl font-light tracking-widest uppercase">To Our Dearest Parents</h2>
-            <div class="mt-8 animate-bounce">
-                <p class="text-sm">Scroll to see the journey</p>
-                <span>↓</span>
-            </div>
+    <header class="relative h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
+        <!-- Background Image (Photo 1) -->
+        <div class="absolute inset-0 z-0">
+            <img src="images/1.jpg" class="w-full h-full object-cover opacity-30 grayscale-[50%]" alt="Bg">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#fff5f5]"></div>
+        </div>
+
+        <div class="relative z-10">
+            <h1 class="text-6xl md:text-8xl cursive text-red-600 drop-shadow-lg mb-4">Happy Anniversary!</h1>
+            <p class="text-xl md:text-2xl font-light text-gray-700 tracking-widest uppercase mb-8">Ma & Papa</p>
+            
+            <!-- THE PARTY POPPER BUTTON -->
+            <button onclick="popIt()" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-full font-bold shadow-xl transform transition hover:scale-110 active:scale-95">
+                🎉 POP THE CELEBRATION!
+            </button>
         </div>
     </header>
 
-    <!-- Message Section -->
-    <section class="max-w-4xl mx-auto py-20 px-6 text-center">
-        <h3 class="text-3xl cursive text-red-600 mb-6">A Journey of Love & Togetherness</h3>
-        <p class="text-lg leading-relaxed text-gray-600 italic">
-            "Through every festival, every prayer, and every smile, you have shown us what true partnership looks like. 
-            From the early days to building our beautiful home, your love is the foundation of our lives."
-        </p>
-    </section>
-
-    <!-- Gallery Section -->
-    <section class="container mx-auto px-4 pb-20">
-        <div class="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-            
-            <!-- We will loop through 21 images. 
-                 Note: Ensure images are named 1.jpg to 21.jpg in an /images folder -->
-            
-            <!-- Example of how to structure the images -->
-            <script>
-                const gallery = document.querySelector('.columns-1');
-                for (let i = 1; i <= 21; i++) {
-                    const div = document.createElement('div');
-                    div.className = "photo-card break-inside-avoid bg-white p-2 rounded-lg shadow-lg border border-orange-100";
-                    div.innerHTML = `<img src="images/${i}.jpg" class="rounded w-full h-auto" alt="Memory ${i}" loading="lazy">`;
-                    document.write(div.outerHTML);
-                }
-            </script>
-
+    <!-- Love Counter Section (The "New" Feature) -->
+    <section class="max-w-4xl mx-auto py-12 px-6">
+        <div class="glass p-8 rounded-3xl shadow-2xl text-center border-2 border-red-100">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Journey of Love</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="p-4"><span id="years" class="text-4xl font-bold text-red-500">0</span><p class="text-sm text-gray-500">Years</p></div>
+                <div class="p-4"><span id="months" class="text-4xl font-bold text-red-500">0</span><p class="text-sm text-gray-500">Months</p></div>
+                <div class="p-4"><span id="days" class="text-4xl font-bold text-red-500">0</span><p class="text-sm text-gray-500">Days</p></div>
+                <div class="p-4"><span id="hours" class="text-4xl font-bold text-red-500">0</span><p class="text-sm text-gray-500">Happy Hours</p></div>
+            </div>
+            <p class="mt-6 italic text-gray-600 text-lg">"Hand in hand, heart to heart, from the very start."</p>
         </div>
     </section>
 
-    <!-- Footer / Wish Section -->
-    <footer class="bg-red-50 py-16 text-center border-t border-red-100">
-        <h2 class="text-4xl cursive text-red-700 mb-4">We Love You!</h2>
-        <p class="text-gray-500 mb-8">May the coming years be filled with even more joy and health.</p>
-        <div class="flex justify-center space-x-4">
-            <span class="text-2xl">❤️</span>
-            <span class="text-2xl">✨</span>
-            <span class="text-2xl">🏡</span>
+    <!-- Interactive Photo Wall -->
+    <section class="container mx-auto px-4 py-16">
+        <h3 class="text-4xl cursive text-center text-gray-800 mb-12 italic">Capture the Memories...</h3>
+        <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6" id="photo-gallery">
+            <!-- Photos will be injected here -->
         </div>
-        <p class="mt-12 text-xs text-gray-400 uppercase tracking-widest">Handcrafted with love by your children</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-20 text-center relative overflow-hidden">
+        <div class="cursive text-5xl text-red-600 mb-4">Together Forever</div>
+        <p class="text-gray-400">Created with Love for the best Parents in the world.</p>
     </footer>
 
+    <script>
+        // 1. PARTY POPPER FUNCTION
+        function popIt() {
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+              confetti({
+                particleCount: 7,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#ff0000', '#ffa500', '#ffffff']
+              });
+              confetti({
+                particleCount: 7,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#ff0000', '#ffa500', '#ffffff']
+              });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
+        }
+
+        // 2. LOVE COUNTER LOGIC (Update the date below to their wedding date!)
+        const weddingDate = new Date("1995-12-23"); // FORMAT: YYYY-MM-DD
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - weddingDate;
+            
+            document.getElementById('years').innerText = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            document.getElementById('months').innerText = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+            document.getElementById('days').innerText = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        }
+        setInterval(updateCounter, 1000);
+
+        // 3. GENERATE GALLERY
+        const gallery = document.getElementById('photo-gallery');
+        for (let i = 1; i <= 21; i++) {
+            const div = document.createElement('div');
+            div.className = "photo-card break-inside-avoid bg-white p-3 rounded-xl shadow-lg hover:shadow-2xl border border-red-50";
+            div.innerHTML = `<img src="images/${i}.jpg" class="rounded-lg w-full h-auto" alt="Memory" loading="lazy">`;
+            gallery.appendChild(div);
+        }
+
+        // 4. FLOATING HEARTS
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            document.getElementById('hearts-container').appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+        setInterval(createHeart, 500);
+
+        // Auto-pop on load
+        window.onload = () => { setTimeout(popIt, 1000); updateCounter(); };
+    </script>
 </body>
 </html>
